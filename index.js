@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { createStorage } from 'object-state-storage';
 
 class Session {
@@ -52,7 +50,7 @@ class Session {
       this._unmounting = true;
 
       // unmount view
-      ReactDOM.unmountComponentAtNode(this._mountPoint);
+      this._unmount();
 
       // create a new controller
       // pass Session's actions and context
@@ -65,11 +63,16 @@ class Session {
       this._render();
     });
   }
+  _unmount() {
+    throw new Error('_unmount is not implemented');
+    // ReactDOM.unmountComponentAtNode(this._mountPoint);
+  }
   _render() {
-    ReactDOM.render(
-      React.createElement(this.controller.view),
-      this._mountPoint,
-    );
+    throw new Error('_render is not implemented');
+    // ReactDOM.render(
+    //   React.createElement(this.controller.view),
+    //   this._mountPoint,
+    // );
   }
   get actions() {
     return {
