@@ -25,6 +25,7 @@ class Session {
 
     // bind!
     this.setCurrentController = this.setCurrentController.bind(this);
+    this._unmount = this._unmount.bind(this);
     this._render = this._render.bind(this);
 
     // re-render controller's view on store updates
