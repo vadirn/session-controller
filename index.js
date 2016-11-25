@@ -46,8 +46,10 @@ class Session {
     // load controller
     // NOTE: failed chunk requests are not handled
     ensureController((Controller) => {
-      // dispose previous controller
-      this.controller.dispose();
+      // dispose previous controller, if controller exists
+      if (this.controller) {
+        this.controller.dispose();
+      }
 
       // disable re-rendering
       this._unmounting = true;
