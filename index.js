@@ -59,7 +59,7 @@ class Session {
 
       // create a new controller
       // pass Session's actions and context
-      this.controller = new Controller(props, this.context, this.actions);
+      this.controller = new Controller(props, this.context);
 
       // enable re-rendering
       this._unmounting = false;
@@ -77,14 +77,11 @@ class Session {
       this._mountPoint,
     );
   }
-  get actions() {
-    return {
-      setCurrentController: this.setCurrentController,
-    };
-  }
+  // shared context, used in actions
   get context() {
     return {
       store: this._store,
+      setCurrentController: this.setCurrentController,
     };
   }
 }

@@ -1,0 +1,10 @@
+webpackJsonp([1],{
+
+/***/ 60:
+/***/ function(module, exports, __webpack_require__) {
+
+	eval("'use strict';\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(32);\n\nvar _react2 = _interopRequireDefault(_react);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar view = function view(props) {\n  return _react2.default.createElement(\n    'div',\n    null,\n    'Example'\n  );\n};\n\nvar ExampleController = function () {\n  function ExampleController() {\n    _classCallCheck(this, ExampleController);\n  }\n\n  _createClass(ExampleController, [{\n    key: 'dispose',\n    value: function dispose() {\n      console.log('dispose controller');\n    }\n  }, {\n    key: 'view',\n    get: function get() {\n      return view;\n    }\n  }]);\n\n  return ExampleController;\n}();\n\nexports.default = ExampleController;\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/controllers/ExampleController/index.js\n// module id = 60\n// module chunks = 1\n//# sourceURL=webpack:///./src/controllers/ExampleController/index.js?");
+
+/***/ }
+
+});
