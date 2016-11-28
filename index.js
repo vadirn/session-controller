@@ -10,11 +10,11 @@ class Session {
     } = props;
 
     if (!mountPoint) {
-      throw new Error('Mount point is not defined');
+      throw new Error('"mountPoint" property is not defined');
     }
 
     if (Object.keys(controllers).length === 0) {
-      throw new Error('Provide controller_name : (cb) => require.ensure(...) map');
+      throw new Error('"controllers" property cannot be empty');
     }
 
     this._mountPoint = mountPoint;
