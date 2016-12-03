@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStorage } from 'object-state-storage';
+import ObjectStateStorage from 'object-state-storage';
 
 class Session {
   constructor(props) {
@@ -21,7 +21,7 @@ class Session {
     this._controllers = controllers;
     this._mounting = false;
 
-    this._store = createStorage({});
+    this._store = new ObjectStateStorage({});
 
     // bind!
     this.setCurrentController = this.setCurrentController.bind(this);
