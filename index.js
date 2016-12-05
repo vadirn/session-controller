@@ -30,7 +30,7 @@ class Session {
 
     // re-render controller's view on store updates
     this._store.subscribe(() => {
-      if (this._unmounting) {
+      if (!this._unmounting) {
         this._render();
       }
     });
