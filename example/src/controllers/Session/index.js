@@ -1,8 +1,8 @@
 import Session from 'session-controller';
 
 class SessionController extends Session {
-  constructor(props) {
-    super(props);
+  constructor(mountPoint, controllers) {
+    super(mountPoint, controllers);
     this.setCurrentController('example');
   }
 }

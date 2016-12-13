@@ -3,12 +3,7 @@ import ReactDOM from 'react-dom';
 import ObjectStateStorage from 'object-state-storage';
 
 class Session {
-  constructor(props) {
-    const {
-      mountPoint,
-      controllers,
-    } = props;
-
+  constructor(mountPoint, controllers) {
     if (!mountPoint) {
       throw new Error('"mountPoint" property is not defined');
     }
@@ -35,7 +30,7 @@ class Session {
       }
     });
   }
-  setCurrentController(name, props) {
+  setCurrentController(name, initialState) {
     // get wrapper for require.ensure
     const ensureController = this._controllers[name];
 
@@ -59,7 +54,7 @@ class Session {
 
       // create a new controller
       // pass Session's actions and context
-      this.controller = new Controller(props, this.context);
+      this.controller = new Controller(initialState, this.context);
 
       // enable re-rendering
       this._unmounting = false;

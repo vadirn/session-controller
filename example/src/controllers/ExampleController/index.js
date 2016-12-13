@@ -9,8 +9,8 @@ const view = (props) => {
 };
 
 class ExampleController {
-  constructor() {
-
+  constructor(initialState, context) {
+    console.log(initialState, context);
   }
   dispose() {
     console.log('dispose controller');
