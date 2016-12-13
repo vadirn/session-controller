@@ -42,8 +42,8 @@ class Session {
     // NOTE: failed chunk requests are not handled
     ensureController((Controller) => {
       // dispose previous controller, if controller exists
-      if (this.controller) {
-        this.controller.dispose();
+      if (this._controller) {
+        this._controller.dispose();
       }
 
       // disable re-rendering
@@ -54,7 +54,7 @@ class Session {
 
       // create a new controller
       // pass Session's actions and context
-      this.controller = new Controller(initialState, this.context);
+      this._controller = new Controller(initialState, this.context);
 
       // enable re-rendering
       this._unmounting = false;
@@ -68,7 +68,7 @@ class Session {
   }
   _render() {
     ReactDOM.render(
-      React.createElement(this.controller.view),
+      React.createElement(this._controller.view),
       this._mountPoint,
     );
   }
