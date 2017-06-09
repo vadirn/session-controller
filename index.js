@@ -1,6 +1,6 @@
+import ObjectStateStorage from 'object-state-storage';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ObjectStateStorage from 'object-state-storage';
 
 class Session {
   constructor(mountPoint, controllers) {
@@ -23,6 +23,11 @@ class Session {
     this._unmount = this._unmount.bind(this);
     this._render = this._render.bind(this);
 
+    this.context = {
+      store: this._store,
+      setCurrentController: this.setCurrentController,
+    };
+
     // re-render controller's view on store updates
     this._store.subscribe(() => {
       if (!this._unmounting) {
@@ -40,7 +45,7 @@ class Session {
 
     // load controller
     // NOTE: failed chunk requests are not handled
-    ensureController((Controller) => {
+    ensureController(Controller => {
       // dispose previous controller, if controller exists
       if (this._controller) {
         this._controller.dispose();
@@ -67,17 +72,7 @@ class Session {
     ReactDOM.unmountComponentAtNode(this._mountPoint);
   }
   _render() {
-    ReactDOM.render(
-      React.createElement(this._controller.view),
-      this._mountPoint,
-    );
-  }
-  // shared context, used in actions
-  get context() {
-    return {
-      store: this._store,
-      setCurrentController: this.setCurrentController,
-    };
+    ReactDOM.render(React.createElement(this._controller.view), this._mountPoint);
   }
 }
 
