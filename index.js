@@ -30,7 +30,7 @@ export class Session {
 
     this.context = {
       store: new ObjectStateStorage({}),
-      mountController: this.mountController,
+      mountController: this.mountController.bind(this),
     };
 
     this.subscribeRenderer();
