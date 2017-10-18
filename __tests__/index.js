@@ -72,8 +72,8 @@ describe('Session', () => {
           return session.mountController('ExampleController');
         })
         .then(controller => {
-          // render should stay the same, as state was not updated
-          expect(session.render.mock.calls.length).toBe(1);
+          // reset was called, should re-render
+          expect(session.render.mock.calls.length).toBe(2);
           expect(controller.reset.mock.calls.length).toBe(2);
           expect(controller.constructor.name).toEqual('ExampleController');
         });

@@ -48,18 +48,20 @@ export class Session {
       return Promise.resolve();
     }
 
+    this.isMounting = true;
+
     if (this.controller) {
       if (this.controller.constructor.name === controllerName) {
         // if controller remains the same
         this.controller.reset(payload);
+        this.isMounting = false;
+        this.render();
         return Promise.resolve(this.controller);
       } else {
         // otherwise dispose current controller
         this.controller.dispose();
       }
     }
-
-    this.isMounting = true;
 
     const importController = this.controllers[controllerName];
     const importErrorController = this.controllers.ErrorController;
