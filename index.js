@@ -7,11 +7,14 @@ export class Controller {
     this.context = context;
     this.reset(payload);
   }
+  get name() {
+    throw new Error('Implement name getter');
+  }
   reset() {
-    throw new Error(`Implement reset() function for ${this.constructor.name}`);
+    throw new Error(`Implement reset() function for ${this.name}`);
   }
   dispose() {
-    throw new Error(`Implement dispose() function for ${this.constructor.name}`);
+    throw new Error(`Implement dispose() function for ${this.name}`);
   }
 }
 
@@ -51,7 +54,7 @@ export class Session {
     this.isMounting = true;
 
     if (this.controller) {
-      if (this.controller.constructor.name === controllerName) {
+      if (this.controller.name === controllerName) {
         // if controller remains the same
         this.controller.reset(payload);
         this.isMounting = false;

@@ -13,6 +13,9 @@ class ExampleController extends Controller {
       return <div>Hello world!</div>;
     };
   }
+  get name() {
+    return 'ExampleController';
+  }
   reset() {}
   dispose() {}
 }
@@ -23,6 +26,9 @@ class ExampleController2 extends Controller {
     this.view = () => {
       return <div>Hello world!</div>;
     };
+  }
+  get name() {
+    return 'ExampleController2';
   }
   reset() {}
   dispose() {}
@@ -62,6 +68,7 @@ describe('Session', () => {
       session.render = jest.fn();
 
       ExampleController.prototype.reset = jest.fn();
+      ExampleController.prototype.dispose = jest.fn();
 
       return session
         .mountController('ExampleController')
@@ -75,6 +82,7 @@ describe('Session', () => {
           // reset was called, should re-render
           expect(session.render.mock.calls.length).toBe(2);
           expect(controller.reset.mock.calls.length).toBe(2);
+          expect(controller.dispose.mock.calls.length).toBe(0);
           expect(controller.constructor.name).toEqual('ExampleController');
         });
     });

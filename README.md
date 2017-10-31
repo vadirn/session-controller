@@ -27,7 +27,7 @@ Note that for `controllers` object:
   - It will be either a `() => import('./ControllerA')` that **creates a new async chunk**.
   - or `() => { return Promise.resolve({ default: ControllerB }) }`, where `ControllerB` was previously imported
 - resolved modules default export should be a class. that's why `ControllerB` value resolves `{ default: ControllerB }` value. It also has to conform to provided `Controller` interface
-- every key should be the same as resolved controller's `.constructor.name`
+- every key should be the same as resolved controller's value returned by `name` getter
 
 Session constructor creates a store and subscribes to its updates to re-render current controller's view.
 
@@ -40,7 +40,7 @@ Session will try to `mountController('ErrorController', { error })` in case of i
 All controllers are expected to:
 - be constructed with two arguments `constructor(context: Object, [payload: Object])`. `context` is session's property, that provides `store` and `mountController` references. `payload` is extra data that can be used to construct initial application state necessary to render controller's view.
 - have `view` property, that is going to be React root component while controller is active
-- have `reset(payload: Object)` method. `payload` from constructor is passed to this function to construct initial application state. This method is also called when `mountController` tries to set already active controller (note that `session.controller.constructor.name` is used to check that). Instead of constructing a new one, `reset` method is called.
+- have `reset(payload: Object)` method. `payload` from constructor is passed to this function to construct initial application state. This method is also called when `mountController` tries to set already active controller (note that `session.controller.name` getter is used to check that). Instead of constructing a new one, `reset` method is called.
 - have `dispose()` method. This method is called when another controller is going to be mounted.
 
 A sample controller might look like this:
