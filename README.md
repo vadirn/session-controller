@@ -31,28 +31,31 @@ Note that for `controllers` object:
 
 Session constructor creates a store and subscribes to its updates to re-render current controller's view.
 
-To change currently active application page, call `session.mountController(controllerName: String, [payload: Object])` - this function will try to import controller from `controllers` object. E.g. `session.mountController('ControllerA')` will try to import `ControllerA` and render it's `view` property on success.
+To change currently active application page, call `session.mountController(controllerName: String)` - this function will try to import controller from `controllers` object. E.g. `session.mountController('ControllerA')` will try to import `ControllerA` and render it's `view` property on success.
 
 Re-render attempts caused by state changes made during controller mount period will be ignored.
 
 Session will try to `mountController('ErrorController', { error })` in case of import failure. If no `ErrorController` is found, an error will be thrown. ErrorController should not be loaded asynchronously.
 
 All controllers are expected to:
-- be constructed with two arguments `constructor(context: Object, [payload: Object])`. `context` is session's property, that provides `store` and `mountController` references. `payload` is extra data that can be used to construct initial application state necessary to render controller's view.
+- be constructed with two arguments `constructor(context: Object)`. `context` is session's property, that provides `store` and `mountController` references. `payload` is extra data that can be used to construct initial application state necessary to render controller's view.
 - have `view` property, that is going to be React root component while controller is active
-- have `reset(payload: Object)` method. `payload` from constructor is passed to this function to construct initial application state. This method is also called when `mountController` tries to set already active controller (note that `session.controller.name` getter is used to check that). Instead of constructing a new one, `reset` method is called.
+- have `controllerWillMount(payload: Object)` method. Usually `payload` is used to construct initial application state. This method is also called when `mountController` tries to set already active controller (note that `session.controller.name` getter is used to check that).
 - have `dispose()` method. This method is called when another controller is going to be mounted.
 
 A sample controller might look like this:
 ```javascript
 class ExampleController extends Controller {
-  constructor(context, payload) {
-    super(context, payload);
+  constructor(context) {
+    super(context);
     this.view = () => {
       return <div>Hello world!</div>;
     };
   }
-  reset() {}
+  get name() {
+    return 'ExampleController'
+  }
+  controllerWillMount() {}
   dispose() {}
 }
 ```
@@ -73,8 +76,8 @@ const view = () => {
 };
 
 class ExampleController extends Controller {
-  constructor(context, payload) {
-    super(context, payload);
+  constructor(context) {
+    super(context);
     this.view = injectDeps(context, actions)(view);
   }
   reset() {}
@@ -111,12 +114,13 @@ class SessionController extends Session {
 ```
 
 ## API
-`Controller`:
-- `constructor(context: Object, [payload: Object])`
-- `reset([payload: Object])`
+Controller:
+- `constructor(context: Object)`
+- `controllerWillMount([payload: Object])`
 - `dispose()`
+- `get name()`
 - `view` - React component
 
-`Session`:
+Session:
 - `constructor(mountPoint: Node, controllers: Object)`
-- `mountController(controllerName: String, [payload: Object])`
+- `mountController(controllerName: String)`

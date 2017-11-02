@@ -7,8 +7,8 @@ import { Controller, Session } from '../index';
 Enzyme.configure({ adapter: new Adapter() });
 
 class ExampleController extends Controller {
-  constructor(...args) {
-    super(...args);
+  constructor(context) {
+    super(context);
     this.view = () => {
       return <div>Hello world!</div>;
     };
@@ -16,13 +16,13 @@ class ExampleController extends Controller {
   get name() {
     return 'ExampleController';
   }
-  reset() {}
+  controllerWillMount() {}
   dispose() {}
 }
 
 class ExampleController2 extends Controller {
-  constructor(...args) {
-    super(...args);
+  constructor(context) {
+    super(context);
     this.view = () => {
       return <div>Hello world!</div>;
     };
@@ -30,7 +30,7 @@ class ExampleController2 extends Controller {
   get name() {
     return 'ExampleController2';
   }
-  reset() {}
+  controllerWillMount() {}
   dispose() {}
 }
 
@@ -49,15 +49,15 @@ describe('Session', () => {
         tree = mount(React.createElement(session.controller.view));
       };
 
-      ExampleController.prototype.reset = jest.fn();
+      ExampleController.prototype.controllerWillMount = jest.fn();
       return session.mountController('ExampleController').then(controller => {
         expect(tree.html()).toEqual('<div>Hello world!</div>');
-        expect(controller.reset.mock.calls.length).toBe(1);
+        expect(controller.controllerWillMount.mock.calls.length).toBe(1);
         expect(controller.constructor.name).toEqual('ExampleController');
         tree.unmount();
       });
     });
-    it('resets controller if already mounted', () => {
+    it('doesn\'t create new controller if already mounted', () => {
       const mountPoint = document.createElement('div');
       const controllers = {
         ExampleController: () => {
@@ -67,21 +67,21 @@ describe('Session', () => {
       const session = new Session(mountPoint, controllers);
       session.render = jest.fn();
 
-      ExampleController.prototype.reset = jest.fn();
+      ExampleController.prototype.controllerWillMount = jest.fn();
       ExampleController.prototype.dispose = jest.fn();
 
       return session
         .mountController('ExampleController')
         .then(controller => {
           expect(session.render.mock.calls.length).toBe(1);
-          expect(controller.reset.mock.calls.length).toBe(1);
+          expect(controller.controllerWillMount.mock.calls.length).toBe(1);
           expect(controller.constructor.name).toEqual('ExampleController');
           return session.mountController('ExampleController');
         })
         .then(controller => {
-          // reset was called, should re-render
+          // controllerWillMount was called, should re-render
           expect(session.render.mock.calls.length).toBe(2);
-          expect(controller.reset.mock.calls.length).toBe(2);
+          expect(controller.controllerWillMount.mock.calls.length).toBe(2);
           expect(controller.dispose.mock.calls.length).toBe(0);
           expect(controller.constructor.name).toEqual('ExampleController');
         });

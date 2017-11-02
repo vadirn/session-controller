@@ -3,14 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export class Controller {
-  constructor(context, payload) {
+  constructor(context) {
     this.context = context;
-    this.reset(payload);
   }
   get name() {
     throw new Error('Implement name getter');
   }
-  reset() {
+  controllerWillMount() {
     throw new Error(`Implement reset() function for ${this.name}`);
   }
   dispose() {
@@ -56,7 +55,7 @@ export class Session {
     if (this.controller) {
       if (this.controller.name === controllerName) {
         // if controller remains the same
-        this.controller.reset(payload);
+        this.controller.controllerWillMount(payload);
         this.isMounting = false;
         this.render();
         return Promise.resolve(this.controller);
@@ -71,7 +70,8 @@ export class Session {
     return new Promise((resolve, reject) => {
       importController()
         .then(({ default: Controller }) => {
-          this.controller = new Controller(this.context, payload);
+          this.controller = new Controller(this.context);
+          this.controller.controllerWillMount(payload);
           this.isMounting = false;
           this.render();
           resolve(this.controller);
@@ -79,7 +79,8 @@ export class Session {
         .catch(err => {
           if (importErrorController) {
             importErrorController().then(({ default: ErrorController }) => {
-              this.controller = new ErrorController(this.context, { error: err });
+              this.controller = new ErrorController(this.context);
+              this.controller.controllerWillMount({ error: err });
               this.isMounting = false;
               this.render();
               resolve(this.controller);
