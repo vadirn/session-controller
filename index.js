@@ -10,7 +10,7 @@ export class Controller {
     throw new Error('Implement name getter');
   }
   controllerWillMount() {
-    throw new Error(`Implement reset() function for ${this.name}`);
+    throw new Error(`Implement controllerWillMount() function for ${this.name}`);
   }
   dispose() {
     throw new Error(`Implement dispose() function for ${this.name}`);
